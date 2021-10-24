@@ -1,3 +1,13 @@
 -- Type matching
 -- a - c, b - d, c - b, d - a, e - e
 
+-- Type arguments
+-- 1. a)
+-- 2. d)
+-- 3. d)
+-- 4. c)
+-- 5. a)
+-- 6. e)
+-- 7. f)
+-- 8. d)
+-- 9. c)
