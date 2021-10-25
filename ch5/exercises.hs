@@ -18,3 +18,9 @@
 -- 3. myTake :: Int -> [Char]
 -- 4. myCom :: (Ord a, Num a) => a -> Bool -- wrong, Int -> Bool. length produces an Int
 -- 5. myAlph :: Char -> Bool
+
+-- Multiple  choices
+-- 1. c)
+-- 2. a)
+-- 3. a) Technically b) is also possible, but there's no details on the implementation
+-- 4. c)
