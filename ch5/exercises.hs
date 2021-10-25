@@ -1,3 +1,7 @@
+{-# LANGUAGE NoMonomorphismRestriction #-}
+
+module CH5 where
+
 -- Type matching
 -- a - c, b - d, c - b, d - a, e - e
 
@@ -24,3 +28,21 @@
 -- 2. a)
 -- 3. a) Technically b) is also possible, but there's no details on the implementation
 -- 4. c)
+
+-- Determine the type
+-- 1. a) Num a => a
+--    b) Num a => (a, [Char])
+--    c) (Integer, [Char])
+--    d) Bool
+--    e) Int
+--    f) Bool
+-- 2. Num a => a
+-- 3. z :: Num a => a -> a
+-- 4. Fractional a => a
+-- 5. f :: [Char]
+
+-- Does it compile
+-- 1. No, first expression results in a number, it's fully applied
+-- 2. It compiles
+-- 3. Third expression won't compile, it tries to apply a number
+-- 4. Second expression won't compile, c is not defined
