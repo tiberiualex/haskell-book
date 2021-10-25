@@ -11,3 +11,10 @@
 -- 7. f)
 -- 8. d)
 -- 9. c)
+
+-- Apply yourself
+-- 1. myConcat :: [Char] -> [Char]
+-- 2. myMult :: Fractional a => a -> a
+-- 3. myTake :: Int -> [Char]
+-- 4. myCom :: (Ord a, Num a) => a -> Bool -- wrong, Int -> Bool. length produces an Int
+-- 5. myAlph :: Char -> Bool
