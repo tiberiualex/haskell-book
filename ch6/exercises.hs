@@ -57,3 +57,10 @@ instance (Eq a, Eq b) => Eq (EitherOr a b) where
 -- 2. Yes
 -- 3. No. Type mismatch
 -- 4. Yes.
+
+-- Multiple choices
+-- 1. c)
+-- 2. a) b)
+-- 3. a)
+-- 4. c)
+-- 5. a)
