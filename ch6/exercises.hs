@@ -1,5 +1,4 @@
 import GHC.Classes (Eq)
-import Distribution.Types.Lens (Benchmark)
 
 -- Eq Instances
 data TisAnInteger =
@@ -52,3 +51,9 @@ instance (Eq a, Eq b) => Eq (EitherOr a b) where
     (==) (Hello a) (Hello b) = a == b
     (==) (Goodbye a) (Goodbye b) = a == b
     (==) _ _ = False
+
+-- Will they work
+-- 1. Yes. Length returns an Int, Int implements Ord
+-- 2. Yes
+-- 3. No. Type mismatch
+-- 4. Yes.
