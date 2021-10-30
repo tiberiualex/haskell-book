@@ -70,3 +70,30 @@ oneIsTwo = (flip dodgy) 2
 -- 10. 31
 -- 11. 23
 
+-- Guard duty
+-- 3. b)
+-- 4. Lists
+-- 5. pal :: Eq a => [a] -> Bool
+-- 6. c)
+-- 7. Types implementing Num
+-- 8. numbers :: Num a => a -> a. Got this one wrong, it's numbers :: (Ord a, Num a, Num p) => a -> p. Num is a typeclass, it doesn't imply Ord, it's not a subclass of Ord
+-- Yes, Num instances usually implement Ord, but technically you can have Num without Ord
+
+-- Chapter execises
+-- Multiple choice
+-- 1. d)
+-- 2. b)
+-- 3. d)
+-- 4. b)
+
+-- Let's write code
+-- 1.
+tensDigit :: Integral a => a -> a
+tensDigit x = d
+    where xLast = x `div` 10
+          d = xLast `mod` 10
+
+tensDigit' :: Integral a => a -> a
+tensDigit' x = d
+    where xLast = (fst . divMod x) 10
+          d = (snd . divMod xLast) 10
