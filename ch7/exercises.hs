@@ -47,3 +47,26 @@ nums x =
         GT -> 1
         EQ -> 0
 
+-- Arftul dodgy
+
+dodgy :: Num a => a -> a -> a
+dodgy x y = x + y * 10
+
+oneIsOne :: Integer -> Integer
+oneIsOne = dodgy 1
+
+oneIsTwo :: Integer -> Integer
+oneIsTwo = (flip dodgy) 2
+
+-- 1. 1.
+-- 2. 11
+-- 3. 22
+-- 4. 21
+-- 5. 12
+-- 6. 11
+-- 7. 21
+-- 8. 21
+-- 9. 22
+-- 10. 31
+-- 11. 23
+
