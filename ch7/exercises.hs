@@ -109,10 +109,27 @@ foldBool x y b =
         False -> x
         True -> y
 
-foldBool x y b
+foldBool' x y b
     | b == False = x
     | otherwise  = y
 
 -- 3.
 g :: (a -> b) -> (a, c) -> (b, c)
 g f (x, y) = (f x, y)
+
+-- 4.
+roundTrip :: (Show a, Read a) => a -> a
+roundTrip a = read (show a)
+
+-- 5.
+roundTrip' :: (Show a, Read a) => a -> a
+roundTrip' = read . show
+
+-- 6.
+roundTrip2 :: (Show a, Read b) => a -> b
+roundTrip2 a = read (show a)
+
+-- 7
+main = do
+    print (roundTrip2 4 :: Int)
+    print (id 4)
