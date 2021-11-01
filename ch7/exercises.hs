@@ -113,3 +113,6 @@ foldBool x y b
     | b == False = x
     | otherwise  = y
 
+-- 3.
+g :: (a -> b) -> (a, c) -> (b, c)
+g f (x, y) = (f x, y)
