@@ -97,3 +97,19 @@ tensDigit' :: Integral a => a -> a
 tensDigit' x = d
     where xLast = (fst . divMod x) 10
           d = (snd . divMod xLast) 10
+
+-- 2.
+foldBool3 :: a -> a -> Bool -> a
+foldBool3 x _ False = x
+foldBool3 _ y True = y
+
+foldBool :: a -> a -> Bool -> a
+foldBool x y b =
+    case b of
+        False -> x
+        True -> y
+
+foldBool x y b
+    | b == False = x
+    | otherwise  = y
+
