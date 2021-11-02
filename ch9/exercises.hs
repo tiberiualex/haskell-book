@@ -89,3 +89,12 @@ tuples2 = [(x, y) | x <- mySqr, x < 50, y <- myCube, y < 50]
 -- 5. a) [1, 4, 9 ..] squares of the numbers 1 to 10
 --    b) [1, 10, 20]
 --    c) [15, 15, 15]
+
+-- Filtering
+-- 1.
+filter3 :: [Integer] -> [Integer]
+filter3 = filter (\x -> x `mod` 3 == 0)
+
+-- 2.
+filter3Length :: [Integer] -> Int
+filter3Length = length . filter3
