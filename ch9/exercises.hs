@@ -1,3 +1,5 @@
+import Data.Char
+
 -- EnumFromTo
 eftBool :: Bool -> Bool -> [Bool]
 eftBool False True = [False, True]
@@ -98,3 +100,33 @@ filter3 = filter (\x -> x `mod` 3 == 0)
 -- 2.
 filter3Length :: [Integer] -> Int
 filter3Length = length . filter3
+
+-- 3.
+filterWords :: [Char] -> [[Char]]
+filterWords = filter notThese . words
+                where notThese = \w -> w /= "the" && w /= "a" && w /= "an"
+
+-- Zip lists
+-- 1.
+myZip :: [a] -> [b] -> [(a, b)]
+myZip [] _ = []
+myZip _ [] = []
+myZip (x:xs) (y:ys) = (x, y) : myZip xs ys
+
+-- Chapter exercises
+-- Data.Char
+-- 2.
+filterUpper = filter isUpper
+
+-- 3.
+capitalize :: [Char] -> [Char]
+capitalize [] = []
+capitalize (x:xs) = toUpper x : xs
+
+-- 4.
+capitalizeAll :: [Char] -> [Char]
+capitalizeAll = map toUpper
+
+-- 5, 6 (already wrote it as pointfree)
+capitalizeHead :: [Char] -> Char
+capitalizeHead = toUpper . head
