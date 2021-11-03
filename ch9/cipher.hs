@@ -10,7 +10,7 @@ cipherChar i c
             zi = ord 'z'
             ci = ord c + i
         in
-            if ci + i <= zi
+            if ci <= zi
                 then chr ci
                 else chr $ ci - zi + ai - 1
 
@@ -22,7 +22,7 @@ cipherChar' i c
             zi = ord 'z'
             ci = ord c + i
         in
-            if ci + i >= ai
+            if ci >= ai
                 then chr ci
                 else chr $ zi + ci - ai + 1
 
@@ -31,5 +31,5 @@ cipherString :: Int -> [Char] -> [Char]
 cipherString i = map (cipherChar i)
 
 decipherString :: Int -> [Char] -> [Char]
-decipherString i = map (cipherChar i)
+decipherString i = map (cipherChar' (-i))
 
