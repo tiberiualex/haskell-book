@@ -130,3 +130,25 @@ capitalizeAll = map toUpper
 -- 5, 6 (already wrote it as pointfree)
 capitalizeHead :: [Char] -> Char
 capitalizeHead = toUpper . head
+
+-- Standard functions
+-- 1.
+myOr :: [Bool] -> Bool
+myOr [] = False
+myOr (x:xs)
+    | x = True
+    | otherwise = myOr xs
+
+-- 2.
+myAny :: (a -> Bool) -> [a] -> Bool
+myAny _ [] = False
+myAny f (x:xs)
+    | f x = True
+    | otherwise = myAny f xs
+
+-- 3.
+myElem :: Eq a => a -> [a] -> Bool
+myElem _ [] = False
+myElem x (y:ys)
+    | x == y = True
+    | otherwise = myElem x ys
