@@ -1,0 +1,11 @@
+-- Exercises: Dog types
+-- 1. Type constructor
+-- 2. The kind is * -> *
+-- 3. *
+-- 4. Num a => Doggies a
+-- 5. Doggies Integer
+-- 6. Doggies String
+-- 7. Both
+-- 8. DogueDeBordeaux a
+-- 9. DogueDeBordeaux String
+
