@@ -1,5 +1,6 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE FlexibleInstances #-}
+import Data.Char
 
 -- Exercises: Dog types
 -- 1. Type constructor
@@ -191,3 +192,57 @@ data Quad =
 -- 4. prodTBool (Bool, Bool, Bool) -> Product type, Bool has the cardinality 2, so 2 * 2 * 2 = 8
 -- 5. gTwo :: Bool -> Bool -> Bool -> Function type, Bool has the cardinality 2, so (2 ^ 2) ^ 2 = 4 ^ 2 = 16
 -- 6. fTwo :: Bool -> Quad -> Quad -> Function type, Bool has  the cardinality 2, Quad has 4, so (2 ^ 4) ^ 4 = 65536
+
+-- Binary trees
+data BinaryTree a =
+      Leaf
+    | Node (BinaryTree a) a (BinaryTree a)
+    deriving (Eq, Ord, Show)
+
+
+insert' :: Ord a
+    => a
+    -> BinaryTree a
+    -> BinaryTree a
+insert' b Leaf = Node Leaf b Leaf
+insert' b (Node left a right)
+    | b == a = Node left a right
+    | b < a = Node (insert' b left) a right
+    | b > a = Node left a (insert' b right)
+
+
+-- Chapter exercises
+-- 1. a)
+-- 2. c)
+-- 3. b)
+-- 4. c)
+
+-- As patterns
+-- 1.
+isSubseqOf :: (Eq a)
+    => [a]
+    -> [a]
+    -> Bool
+isSubseqOf [] _ = True
+isSubseqOf _ [] = False
+isSubseqOf allx@(x:xs) ally@(y:ys)
+    | x == y = isSubseqOf xs ys
+    | otherwise = isSubseqOf allx ys
+
+-- f all@(w:ws) = (((toUpper w) : ws), all)
+capitalTuple :: String -> (String, String)
+capitalTuple [] = ("", "")
+capitalTuple all@(w:ws) = (all, toUpper w : ws)
+
+capitalizeWords :: String -> [(String, String)]
+capitalizeWords s = map capitalTuple (words s)
+
+-- Language exercises
+-- 1.
+capitalizeWord :: String -> String
+capitalizeWord w =
+    case w of
+        "" -> ""
+        (x:xs) -> toUpper x : xs
+
+-- 2.
