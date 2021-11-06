@@ -177,3 +177,17 @@ allOperatingSystems =
 
 allProgrammers :: [Programmer]
 allProgrammers = [Programmer { lang = a, os = b} | a <- allLanguages, b <- allOperatingSystems ]
+
+-- The Quad (function type is exponential)
+data Quad =
+      One
+    | Two
+    | Three
+    | Four
+
+-- 1. eQuad :: Either Quad Quad -> It's a sum type, Quad has the cardinality 4, so 4 + 4 = 8
+-- 2. prodQuad :: (Quad, Quad) -> Product type, Quad has the cardinality 4, so 4 * 4 = 16
+-- 3. funcQuad :: Quad -> Quad -> Function type, Quad has the cardinality 4, so 4 ^ 4 = 256 forms
+-- 4. prodTBool (Bool, Bool, Bool) -> Product type, Bool has the cardinality 2, so 2 * 2 * 2 = 8
+-- 5. gTwo :: Bool -> Bool -> Bool -> Function type, Bool has the cardinality 2, so (2 ^ 2) ^ 2 = 4 ^ 2 = 16
+-- 6. fTwo :: Bool -> Quad -> Quad -> Function type, Bool has  the cardinality 2, Quad has 4, so (2 ^ 4) ^ 4 = 65536
