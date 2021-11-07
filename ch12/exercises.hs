@@ -16,3 +16,8 @@ mapperF x = case notThe x of
 replaceThe :: String -> String
 replaceThe "" = ""
 replaceThe s = tail $ concatMap mapperF $ words s
+
+-- 2.
+
+countTheBeforeVowel :: String -> Integer
+countTheBeforeVowel x = undefined
