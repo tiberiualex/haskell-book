@@ -1,6 +1,8 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE FlexibleInstances #-}
 import Data.Char
+import Data.List
+import Data.Maybe
 
 -- Exercises: Dog types
 -- 1. Type constructor
@@ -245,4 +247,70 @@ capitalizeWord w =
         "" -> ""
         (x:xs) -> toUpper x : xs
 
--- 2.
+
+
+-- Phone exercise
+
+type Digit = Char
+type Presses = Int
+type Characters = String
+type Key = (Digit, Characters)
+type Tap = (Digit, Presses)
+type DaPhone = [Key]
+
+phone :: DaPhone
+phone =
+    [
+      ('1', "1")
+    , ('2', "ABC2")
+    , ('3', "DEF3")
+    , ('4', "GHI4")
+    , ('5', "JKL5")
+    , ('6', "MNO6")
+    , ('7', "PQRS7")
+    , ('8', "TUV8")
+    , ('9', "WXYZ9")
+    , ('*', "^")
+    , ('0', "+ 0")
+    , ('#', ".,")
+    ]
+
+convo :: [String]
+convo =
+    [ "Random question 1",
+      "Hello",
+      "Random question 2",
+      "Qfwg fwgw 323. jHfqw",
+      "String 4" ]
+
+createTaps :: DaPhone -> String -> [Tap]
+createTaps daPhone = map (fromJust . charToTap daPhone)
+
+-- To fix: some faulty logic in changing the casing
+createTapsWithCaseChange :: DaPhone -> String -> [Tap]
+createTapsWithCaseChange daPhone = fst . foldr (tapsFolder phone) ([], True)
+
+tapsFolder :: DaPhone -> Char -> ([Tap], Bool) -> ([Tap], Bool)
+tapsFolder phone x acc =
+    let y = charToTapWithCasingInfo phone (x, snd acc)
+    in
+        (map fromJust (fst y) ++ fst acc, snd y && snd acc)
+
+charToTap :: DaPhone -> Char -> Maybe Tap
+charToTap p c =
+    case find (\key -> toUpper c `elem` snd key) p of
+        Nothing -> Nothing
+        Just (digit, chars) -> Just (digit, presses)
+            where presses = (fromJust $ toUpper c `elemIndex` chars) + 1 -- This is safe, as we wouldn't match this case if the character wasn't among the key's characters
+
+charToTapWithCasingInfo :: DaPhone -> (Char, Bool) -> ([Maybe Tap], Bool)
+charToTapWithCasingInfo phone (c, lowerCasing) =
+    if isAlphaNum c
+    then
+        case isUpper c /= lowerCasing of
+            True -> ([charToTap phone '^', charToTap phone c], not lowerCasing)
+            False -> ([charToTap phone c], lowerCasing)
+    else ([charToTap phone c], lowerCasing)
+
+createTapsForConversation :: DaPhone -> [String] -> [Tap]
+createTapsForConversation phone = concatMap (createTapsWithCaseChange phone)
