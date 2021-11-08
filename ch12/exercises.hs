@@ -51,3 +51,20 @@ mkWord s = if moreVowels
            then Nothing
            else Just (Word' s)
            where moreVowels = vw s > length s - vw s + 1
+
+-- Natural numbers
+data Nat =
+      Zero
+    | Succ Nat
+    deriving (Eq, Show)
+
+natToInteger :: Nat -> Integer
+natToInteger Zero = 0
+natToInteger (Succ n) = 1 + natToInteger n
+
+convertToNat :: Integer -> Nat
+convertToNat 0 = Zero
+convertToNat n = Succ (convertToNat (n - 1))
+
+integerToNat :: Integer -> Maybe Nat
+integerToNat n = if n < 0 then Nothing else Just (convertToNat n)
