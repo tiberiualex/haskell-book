@@ -68,3 +68,25 @@ convertToNat n = Succ (convertToNat (n - 1))
 
 integerToNat :: Integer -> Maybe Nat
 integerToNat n = if n < 0 then Nothing else Just (convertToNat n)
+
+-- Library for Maybe
+
+isJust :: Maybe a -> Bool
+isJust Nothing = False
+isJust (Just _) = True
+
+isNothing :: Maybe a -> Bool
+isNothing = not . isJust
+
+mayybee :: b -> (a -> b) -> Maybe a -> b
+mayybee x _ Nothing = x
+mayybee x f (Just y) = f y
+
+fromMaybe :: a -> Maybe a -> a
+fromMaybe x Nothing = x
+fromMaybe x (Just y) = y
+
+fromMaybe' :: a -> Maybe a -> a
+fromMaybe' x = mayybee x id
+
+-- todo: Either exercises
