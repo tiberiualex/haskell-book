@@ -19,5 +19,35 @@ replaceThe s = tail $ concatMap mapperF $ words s
 
 -- 2.
 
-countTheBeforeVowel :: String -> Integer
-countTheBeforeVowel x = undefined
+isVowel :: Char -> Bool
+isVowel l = l `elem` "aeiou"
+
+vowelAfterThe :: [Char] -> [Char] -> Bool
+vowelAfterThe x1 x2 =
+    (x1 == "the") && isVowel (head x2)
+
+countTheBeforeVowel :: [String] -> Integer
+countTheBeforeVowel [] = 0
+countTheBeforeVowel [x] = 0
+countTheBeforeVowel (x:xs) =
+    n + countTheBeforeVowel xs
+    where n = if vowelAfterThe x (head xs) then 1 else 0
+
+countTheBeforeVowel' :: String -> Integer
+countTheBeforeVowel' = countTheBeforeVowel . words
+
+-- Validate the word
+newtype Word' =
+    Word' String
+    deriving (Eq, Show)
+
+vowels :: String
+vowels = "aeiou"
+vw :: String -> Int
+vw = foldr (\x acc -> if x `elem` "aeiou" then acc + 1 else acc) 0
+
+mkWord :: String -> Maybe Word'
+mkWord s = if moreVowels
+           then Nothing
+           else Just (Word' s)
+           where moreVowels = vw s > length s - vw s + 1
