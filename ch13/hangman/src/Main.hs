@@ -91,7 +91,7 @@ handleGuess puzzle guess = do
 
 gameOver :: Puzzle -> IO ()
 gameOver (Puzzle wordToGuess _ guessed) =
-    if (length guessed) > 7 then
+    if (length guessed) >= 7 then
         do putStrLn "You lose!"
            putStrLn $ "The word was: " ++ wordToGuess
            exitSuccess
@@ -107,8 +107,8 @@ gameWin (Puzzle _ filledInSoFar _) =
 
 runGame :: Puzzle -> IO ()
 runGame puzzle = forever $ do
-    gameOver puzzle
     gameWin puzzle
+    gameOver puzzle
     putStrLn $ "Current puzzle is: " ++ show puzzle
     putStr "Guess a letter: "
     guess <- getLine
