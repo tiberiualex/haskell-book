@@ -41,22 +41,22 @@ randomWord wl = do
     return $ wl !! randomIndex
 
 data Puzzle =
-    Puzzle String [Maybe Char] [Char]
+    Puzzle String [Maybe Char] [Char] Int
 
 instance Show Puzzle where
-    show (Puzzle _ discovered guessed) =
+    show (Puzzle _ discovered guessed _) =
         (intersperse ' ' $
          fmap renderPuzzleChar discovered)
         ++ " Guessed so far: " ++ guessed
 
 freshPuzzle :: String -> Puzzle
-freshPuzzle s = Puzzle s (replicate (length s) Nothing) ""
+freshPuzzle s = Puzzle s (replicate (length s) Nothing ) "" 0
 
 charInWord :: Puzzle -> Char -> Bool
-charInWord (Puzzle s _ _) c = c `elem` s
+charInWord (Puzzle s _ _ _) c = c `elem` s
 
 alreadyGuessed :: Puzzle -> Char -> Bool
-alreadyGuessed (Puzzle _ _ s) c = c `elem` s
+alreadyGuessed (Puzzle _ _ s _) c = c `elem` s
 
 renderPuzzleChar :: Maybe Char -> Char
 renderPuzzleChar Nothing = '_'
@@ -69,10 +69,11 @@ zipper guessed wordChar guessChar =
     else guessChar
 
 fillInCharacter :: Puzzle -> Char -> Puzzle
-fillInCharacter (Puzzle word filledInSofar s) c =
-    Puzzle word newFilledInSoFar (c : s)
+fillInCharacter (Puzzle word filledInSofar s i) c =
+    Puzzle word newFilledInSoFar (c : s) (i + x)
     where
         newFilledInSoFar = zipWith (zipper c) word filledInSofar
+        x = if newFilledInSoFar == filledInSofar then 1 else 0
 
 handleGuess :: Puzzle -> Char -> IO Puzzle
 handleGuess puzzle guess = do
@@ -90,15 +91,15 @@ handleGuess puzzle guess = do
             return (fillInCharacter puzzle guess)
 
 gameOver :: Puzzle -> IO ()
-gameOver (Puzzle wordToGuess _ guessed) =
-    if (length guessed) >= 7 then
+gameOver (Puzzle wordToGuess _ guessed incorrectGuesses) =
+    if (incorrectGuesses) >= 7 then
         do putStrLn "You lose!"
            putStrLn $ "The word was: " ++ wordToGuess
            exitSuccess
     else return ()
 
 gameWin :: Puzzle -> IO ()
-gameWin (Puzzle _ filledInSoFar _) =
+gameWin (Puzzle _ filledInSoFar _ _) =
     if all isJust filledInSoFar then
         do putStrLn "You win!"
            exitSuccess
