@@ -52,6 +52,6 @@ monoidRightIdentity a = (a <> mempty) == a
 --     let ma = monoidAssoc
 --         mli = monoidLeftIdentity
 --         mlr = monoidRightIdentity
---         quickCheck (ma :: BullMappend)
+--         quickCheck (ma :: Bull -> Mappend)
 --         quickCheck (mli :: Bull -> Bool)
 --         quickCheck (mlr :: Bull -> Bool)
