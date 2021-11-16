@@ -55,3 +55,19 @@ monoidRightIdentity a = (a <> mempty) == a
 --         quickCheck (ma :: Bull -> Mappend)
 --         quickCheck (mli :: Bull -> Bool)
 --         quickCheck (mlr :: Bull -> Bool)
+
+data Trivial = Trivial deriving (Eq, Show)
+
+instance Semigroup Trivial where
+    Trivial <> Trivial = Trivial
+
+instance Arbitrary Trivial where
+    arbitrary = return Trivial
+
+semigroupAssoc :: (Eq m, Semigroup m) => m -> m -> m -> Bool
+semigroupAssoc a b c = (a <> (b <> c)) == ((a <> b) <> c)
+
+type TrivAssoc = Trivial -> Trivial -> Trivial -> Bool
+
+testTrivialAssoc :: IO ()
+testTrivialAssoc = verboseCheck (semigroupAssoc :: TrivAssoc)
