@@ -106,7 +106,7 @@ testTwoAssoc :: IO ()
 testTwoAssoc = quickCheck (semigroupAssoc :: TwoAssoc)
 
 newtype BoolConj =
-    BoolConj Bool
+    BoolConj Bool deriving (Eq, Show)
 
 instance Semigroup BoolConj where
     (BoolConj x) <> (BoolConj y) = BoolConj (x && y)
