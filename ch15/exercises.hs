@@ -71,3 +71,52 @@ type TrivAssoc = Trivial -> Trivial -> Trivial -> Bool
 
 testTrivialAssoc :: IO ()
 testTrivialAssoc = verboseCheck (semigroupAssoc :: TrivAssoc)
+
+newtype Identity a = Identity a
+    deriving (Eq, Show)
+
+instance Semigroup a => Semigroup (Identity a) where
+    (Identity x) <> (Identity y) = Identity (x <> y)
+
+instance Arbitrary a => Arbitrary (Identity a) where
+  arbitrary = do
+    x <- arbitrary
+    return (Identity x)
+
+type IdenAssoc = Identity All -> Identity All -> Identity All -> Bool
+
+testIdenAssoc :: IO ()
+testIdenAssoc = verboseCheck (semigroupAssoc :: IdenAssoc)
+
+data Two a b = Two a b
+    deriving (Eq, Show)
+
+instance (Semigroup a, Semigroup b) => Semigroup (Two a b) where
+    (Two a b) <> (Two c d) = Two (a <> c) (b <> d)
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Two a b) where
+    arbitrary = do
+        a <- arbitrary
+        b <- arbitrary
+        return (Two a b)
+
+type TwoAssoc = Two All Trivial -> Two All Trivial -> Two All Trivial -> Bool
+
+testTwoAssoc :: IO ()
+testTwoAssoc = quickCheck (semigroupAssoc :: TwoAssoc)
+
+newtype BoolConj =
+    BoolConj Bool
+
+instance Semigroup BoolConj where
+    (BoolConj x) <> (BoolConj y) = BoolConj (x && y)
+
+type BoolAssoc = BoolConj -> BoolConj -> BoolConj -> Bool
+
+instance Arbitrary BoolConj where
+    arbitrary = do
+        x <- elements [True, False]
+        return (BoolConj x)
+
+testBoolConjAssoc :: IO ()
+testBoolConjAssoc = quickCheck (semigroupAssoc :: BoolAssoc)
