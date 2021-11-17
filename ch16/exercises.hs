@@ -1,0 +1,4 @@
+-- Kinds
+-- 1. kind *
+-- 2. They're both kind * -> *
+-- 3. kind * -> * -> *
