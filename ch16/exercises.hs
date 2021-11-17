@@ -1,4 +1,5 @@
 {-# LANGUAGE ViewPatterns #-}
+{-# LANGUAGE ExistentialQuantification #-}
 
 import Test.QuickCheck
 import Test.QuickCheck.Function
@@ -59,14 +60,37 @@ functorCompose f g x = (fmap g . fmap f) x == fmap (g . f) x
 functorCompose' :: (Eq (f c), Functor f) => f a -> Fun a b -> Fun b c -> Bool
 functorCompose' x (Fun _ f) (Fun _ g) = (fmap (g . f) x) == (fmap g . fmap f $ x)
 
-newtype Identity a = Identity a
+newtype Identity a =
+    Identity a deriving (Eq, Show)
 
 instance Functor Identity where
     fmap f (Identity x) = Identity (f x)
 
 type IntToInt = Fun Int Int
 
-type IntFC = [Int] -> IntToInt -> IntToInt -> Bool
+type IdInt = Identity Int -> IntToInt -> IntToInt -> Bool
+
+instance Arbitrary a => Arbitrary (Identity a) where
+  arbitrary = do
+    x <- arbitrary
+    return (Identity x)
 
 testIdentityFunctor :: IO ()
-testIdentityFunctor = quickCheck (functorCompose' :: IntFC)
+testIdentityFunctor = quickCheck (functorCompose' :: IdInt)
+
+data Pair a b =
+    Pair a b deriving (Eq, Show)
+
+instance Functor (Pair a) where
+    fmap f (Pair a b) = Pair a (f b)
+
+type TupleInt = Pair Int Int -> IntToInt -> IntToInt -> Bool
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Pair a b) where
+    arbitrary = do
+        a <- arbitrary
+        b <- arbitrary
+        return (Pair a b)
+
+testTupleFunctor :: IO ()
+testTupleFunctor = quickCheck (functorCompose' :: TupleInt)
