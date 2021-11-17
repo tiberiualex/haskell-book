@@ -120,3 +120,19 @@ instance Arbitrary BoolConj where
 
 testBoolConjAssoc :: IO ()
 testBoolConjAssoc = quickCheck (semigroupAssoc :: BoolAssoc)
+
+newtype BoolDisj =
+    BoolDisj Bool deriving (Eq, Show)
+
+instance Semigroup BoolDisj where
+    (BoolDisj x) <> (BoolDisj y) = BoolDisj (x || y)
+
+type BoolDisjAssoc = BoolDisj -> BoolDisj -> BoolDisj -> Bool
+
+instance Arbitrary BoolDisj where
+    arbitrary = do
+        x <- elements [True, False]
+        return (BoolDisj x)
+
+testBoolDisjAssoc :: IO ()
+testBoolDisjAssoc = quickCheck (semigroupAssoc :: BoolDisjAssoc)
