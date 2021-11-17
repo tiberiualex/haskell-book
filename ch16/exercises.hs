@@ -1,3 +1,8 @@
+{-# LANGUAGE ViewPatterns #-}
+
+import Test.QuickCheck
+import Test.QuickCheck.Function
+
 -- Kinds
 -- 1. kind *
 -- 2. They're both kind * -> *
@@ -40,3 +45,28 @@ f :: IO Integer
 f = let ioi = readIO "1" :: IO Integer
         changed = fmap (read . (("123"++) . show)) ioi
         in fmap (*3) changed
+
+-- QuickCheck functor exercises
+
+-- stack ghci --package QuickCheck
+
+functorIdentity :: (Functor f, Eq (f a)) => f a -> Bool
+functorIdentity f = fmap id f == f
+
+functorCompose :: (Eq (f c), Functor f) => (a -> b) -> (b -> c) -> f a -> Bool
+functorCompose f g x = (fmap g . fmap f) x == fmap (g . f) x
+
+functorCompose' :: (Eq (f c), Functor f) => f a -> Fun a b -> Fun b c -> Bool
+functorCompose' x (Fun _ f) (Fun _ g) = (fmap (g . f) x) == (fmap g . fmap f $ x)
+
+newtype Identity a = Identity a
+
+instance Functor Identity where
+    fmap f (Identity x) = Identity (f x)
+
+type IntToInt = Fun Int Int
+
+type IntFC = [Int] -> IntToInt -> IntToInt -> Bool
+
+testIdentityFunctor :: IO ()
+testIdentityFunctor = quickCheck (functorCompose' :: IntFC)
