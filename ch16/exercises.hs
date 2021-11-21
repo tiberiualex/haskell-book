@@ -94,3 +94,22 @@ instance (Arbitrary a, Arbitrary b) => Arbitrary (Pair a b) where
 
 testTupleFunctor :: IO ()
 testTupleFunctor = quickCheck (functorCompose' :: TupleInt)
+
+data Three a b c = Three a b c
+    deriving (Eq, Show)
+
+instance Functor (Three a b) where
+    fmap f (Three a b c) = Three a b (f c)
+
+instance (Arbitrary a, Arbitrary b, Arbitrary c) => Arbitrary (Three a b c) where
+    arbitrary = do
+        a <- arbitrary
+        b <- arbitrary
+        c <- arbitrary
+        return (Three a b c)
+
+type ThreeInt = Three Int Int Int -> IntToInt -> IntToInt -> Bool
+
+testThreeFunctor :: IO ()
+testThreeFunctor = quickCheck (functorCompose' :: ThreeInt)
+
