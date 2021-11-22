@@ -113,3 +113,5 @@ type ThreeInt = Three Int Int Int -> IntToInt -> IntToInt -> Bool
 testThreeFunctor :: IO ()
 testThreeFunctor = quickCheck (functorCompose' :: ThreeInt)
 
+data Three' a b = Three' a b b
+    deriving (Eq, Show)
