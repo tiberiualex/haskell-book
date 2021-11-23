@@ -115,3 +115,19 @@ testThreeFunctor = quickCheck (functorCompose' :: ThreeInt)
 
 data Three' a b = Three' a b b
     deriving (Eq, Show)
+
+instance Functor (Three' a) where
+    fmap f (Three' a b c) = Three' a (f b) (f c)
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Three' a b) where
+    arbitrary = do
+        a <- arbitrary
+        b <- arbitrary
+        c <- arbitrary
+        return (Three' a b c)
+
+type ThreeInt' = Three' Int Int -> IntToInt -> IntToInt -> Bool
+
+testThreeFunctor' :: IO ()
+testThreeFunctor' = quickCheck (functorCompose' :: ThreeInt')
+
