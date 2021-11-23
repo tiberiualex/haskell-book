@@ -1,8 +1,10 @@
 {-# LANGUAGE ViewPatterns #-}
 {-# LANGUAGE ExistentialQuantification #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 import Test.QuickCheck
 import Test.QuickCheck.Function
+import GHC.Arr
 
 -- Kinds
 -- 1. kind *
@@ -131,3 +133,98 @@ type ThreeInt' = Three' Int Int -> IntToInt -> IntToInt -> Bool
 testThreeFunctor' :: IO ()
 testThreeFunctor' = quickCheck (functorCompose' :: ThreeInt')
 
+-- Chapter exercises
+-- Functor instances
+-- 1. No, Bool has kind *
+-- 2. Yes
+-- 3. Yes
+-- 4. No, Mu has kind (* -> *) -> *
+-- 5. No, D has kind *
+
+-- Rearrange arguments
+
+-- 1.
+data Sum a b =
+    First a
+    | Second b
+
+instance Functor (Sum e) where
+    fmap f (First a) = First a
+    fmap f (Second b) = Second (f b)
+
+-- 2.
+data Company a b c =
+      DeepBlue a c
+    | Something b
+
+instance Functor (Company e e') where
+    fmap f (Something b) = Something b
+    fmap f (DeepBlue a c) = DeepBlue a (f c)
+
+-- 3.
+data More a b =
+      L a b a
+    | R b a b
+    deriving (Eq, Show)
+
+instance Functor (More x) where
+    fmap f (L a b a') = L a (f b) a'
+    fmap f (R b a b') = R (f b) a (f b')
+
+-- Write functor instances
+-- 1.
+data Quant a b =
+      Finance
+    | Desk a
+    | Bloor b
+
+instance Functor (Quant a) where
+    fmap _ Finance = Finance
+    fmap _ (Desk a) = Desk a
+    fmap f (Bloor b) = Bloor (f b)
+
+-- 2.
+data K a b =
+    K a
+
+instance Functor (K a) where
+    fmap f (K a) = K a
+
+-- 3.
+newtype Flip f a b =
+    Flip (f b a)
+    deriving (Eq, Show)
+
+newtype K' a b =
+    K' a
+
+instance Functor (Flip K' a) where
+    fmap f (Flip (K' a)) = Flip $ K' (f a)
+
+-- 4.
+data EvilGoateeConst a b =
+    GoatyConst b
+
+instance Functor (EvilGoateeConst a) where
+    fmap f (GoatyConst a) = GoatyConst $ f a
+
+-- 5.
+data LiftItOut f a =
+    LiftItOut (f a)
+
+instance Functor f => Functor (LiftItOut f) where
+    fmap f (LiftItOut fa) = LiftItOut (fmap f fa)
+
+-- 6.
+data Parappa f g a =
+    DaWrappa (f a) (g a)
+
+instance (Functor f, Functor g) => Functor (Parappa f g) where
+    fmap f (DaWrappa fa ga) = DaWrappa (fmap f fa) (fmap f ga)
+
+-- 7.
+data IgnoreOne f g a b =
+    IgnoreSomething (f a) (g b)
+
+instance Functor g => Functor (IgnoreOne f g a) where
+    fmap f (IgnoreSomething fa ga) = IgnoreSomething fa (fmap f ga)
