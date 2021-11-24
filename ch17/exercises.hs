@@ -66,3 +66,14 @@ summed = fmap sum $ (,) <$> x4 <*> y4
 
 -- (,) <$> x4 <*> y4 results in Just (6, 5)
 -- then just fmap sum over that
+
+-- Identity instance
+newtype Identity a = Identity a
+    deriving (Eq, Ord, Show)
+
+instance Functor Identity where
+    fmap f (Identity a) = Identity (f a)
+
+instance Applicative Identity where
+    pure = Identity
+    (<*>) (Identity f) (Identity a) = Identity (f a)
