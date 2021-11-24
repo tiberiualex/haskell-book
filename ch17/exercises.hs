@@ -68,12 +68,29 @@ summed = fmap sum $ (,) <$> x4 <*> y4
 -- then just fmap sum over that
 
 -- Identity instance
-newtype Identity a = Identity a
+newtype Identity' a = Identity' a
     deriving (Eq, Ord, Show)
 
-instance Functor Identity where
-    fmap f (Identity a) = Identity (f a)
+instance Functor Identity' where
+    fmap f (Identity' a) = Identity' (f a)
 
-instance Applicative Identity where
-    pure = Identity
-    (<*>) (Identity f) (Identity a) = Identity (f a)
+instance Applicative Identity' where
+    pure = Identity'
+    (<*>) (Identity' f) (Identity' a) = Identity' (f a)
+
+newtype Constant' a b =
+    Constant' { getConstant' :: a }
+    deriving (Eq, Ord, Show)
+
+instance Functor (Constant' a) where
+    fmap _ (Constant' e) = Constant' e
+
+instance Monoid a => Applicative (Constant' a) where
+    pure _ = Constant' mempty
+    Constant' x <*> Constant' y = Constant' (x `mappend` y)
+
+-- Fixed upper
+something :: Maybe [Char]
+something = const <$> Just "Hello" <*> pure "World"
+
+zupple = (,,,) <$> Just 90 <*> Just 10 <*> Just "Tierness" <*> pure [1, 2, 3]
