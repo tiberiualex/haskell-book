@@ -1,0 +1,5 @@
+-- putStrLn <$> getLine
+-- putStrLn :: String -> IO ()
+-- getLine :: IO String
+-- fmap :: (a      -> b ) -> f  a ->      f  b
+-- fmap :: (String -> IO) -> IO String -> IO IO
