@@ -22,3 +22,11 @@ product' x = getProduct . foldMap Product
 
 elem' :: (Foldable t, Eq a) => a -> t a -> Bool
 elem' x = foldr (\e acc -> acc || e == x) False
+
+
+-- Foldable instances
+data Constant a b = Constant b
+    deriving (Eq, Show)
+
+instance Foldable (Constant a) where
+    foldr f y (Constant b) = f b y
