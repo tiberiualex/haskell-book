@@ -9,3 +9,16 @@
 -- sequenceA :: Applicative f => t (f a) -> f (t a)
 -- sequenceA = traverse id
 
+-- fmap :: (a -> b) -> f a -> f b
+-- (=<<) :: (a -> m b) -> m a -> m b
+-- traverse :: (a -> f b) -> t a -> f (t b)
+
+-- Prelude> fmap Just [1, 2, 3]
+-- [Just 1,Just 2,Just 3]
+-- Prelude> sequenceA $ fmap Just [1, 2, 3]
+-- Just [1,2,3]
+-- Prelude> sequenceA . fmap Just $ [1, 2, 3]
+-- Just [1,2,3]
+-- Prelude> traverse Just [1, 2, 3]
+-- Just [1,2,3]
+-- fmap just over [1, 2, 3], resulting in [Just 1, Just 2, Just 3], then flip the structures around
