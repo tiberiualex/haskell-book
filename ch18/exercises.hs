@@ -1,3 +1,4 @@
+import Control.Monad (join)
 -- putStrLn <$> getLine
 -- putStrLn :: String -> IO ()
 -- getLine :: IO String
@@ -75,3 +76,29 @@ mkSphericalCow'' name' age' weight' =
                 (\ax ->
                     noNegative weight' >>=
                         \wx -> weightCheck (Cow nx ax wx)))
+
+data Sum a b =
+      First a
+    | Second b
+    deriving (Eq, Show)
+
+instance Functor (Sum a) where
+    fmap _ (First a) = First a
+    fmap f (Second b) = Second (f b)
+
+instance Applicative (Sum a) where
+    pure = Second
+    Second f <*> Second a = Second (f a)
+    First f <*> _ = First f
+    Second f <*> First a = First a
+
+instance Monad (Sum a) where
+    return = pure
+    First a >>= _ = First a
+    Second a >>= f = f a
+
+plusOne :: Int -> Sum a Int
+plusOne x = Second (x + 1)
+
+xSum :: Sum a Int
+xSum = Second 2
