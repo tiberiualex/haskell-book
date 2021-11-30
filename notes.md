@@ -47,3 +47,56 @@ fmap id == id
 -- composition
 fmap (f . g) == fmap f . fmap g
 ```
+
+Applicative:
+
+```haskell
+class Functor f => Applicative f where
+  pure :: a -> f a
+  (<*>) :: f (a -> b) -> f a -> f b
+```
+
+It provides:
+
+```haskell
+liftA :: Applicative f =>
+  (a -> b)
+  -> f a
+  -> f b
+
+liftA2 :: Applicative f =>
+(a -> b -> c)
+  -> f a
+  -> f b
+  -> f c
+
+liftA3 :: Applicative f =>
+  (a -> b -> c -> d)
+  -> f a
+  -> f b
+  -> f c
+  -> f d
+```
+
+Applicative laws:
+
+```haskell
+--identity
+pure id <*> v = v
+
+-- composition
+pure (.) <*> u <*> v <*> w =
+  u <*> (v <*> w)
+
+-- homomorphims
+pure f <*> pure x = pure (f x)
+
+-- interchange
+u <*> pure y = pure ($ y) <*> u
+```
+
+```haskell
+($)   ::   (a -> b) -> a   ->   b
+(<$>) ::   (a -> b) -> f a -> f b
+(<*>) :: f (a -> b) -> f a -> f b
+```
