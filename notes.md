@@ -100,3 +100,25 @@ u <*> pure y = pure ($ y) <*> u
 (<$>) ::   (a -> b) -> f a -> f b
 (<*>) :: f (a -> b) -> f a -> f b
 ```
+
+Monad:
+
+```haskell
+class Applicative m => Monad m where
+  (>>=) :: m a -> (a -> m b) -> m b
+  (>>) :: m a -> m b -> m b
+  return :: a -> m a
+```
+
+Monad laws:
+
+```haskell
+-- right identity
+m >>= return = m
+
+-- left identity
+return x >>= f = fx
+
+-- associativity
+(m >>= f) >>= g = m >>= (\x -> f x >>= g)
+```
