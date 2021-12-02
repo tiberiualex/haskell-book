@@ -122,3 +122,36 @@ return x >>= f = fx
 -- associativity
 (m >>= f) >>= g = m >>= (\x -> f x >>= g)
 ```
+
+Foldable:
+
+```haskell
+class Foldable t where
+  {-# MINIMAL foldMap | foldr #-}
+  fold :: Monoid m => t m -> m
+  foldMap :: Monoid m => (a -> m) -> t a -> m
+```
+
+Traversable:
+
+```haskell
+class (Functor t, Foldable t) => Traversable t where
+  {-# MINIMAL traverse | sequenceA #-}
+  traverse :: Applicative f => (a -> f b) -> t a -> f (t b)
+  traverse f = sequenceA . fmap f
+  sequenceA :: Applicative f => t (f a) -> f (t a)
+  sequenceA = traverse id
+```
+
+Traversable laws:
+
+```haskell
+-- Naturality
+t . traverse f = traverse (t . f)
+
+-- Identity
+traverse Identity = Identity
+
+-- Composition
+traverse (Compose . fmap g . f) = Compose . fmap (traverse g) . traverse f
+```
